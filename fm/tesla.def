@@ -1,0 +1,11 @@
+
+EXPORTS
+	FM_Initialize
+	FM_Finalize
+	MD_Initialize
+	MD_Finalize
+	MD_GetHsmCount
+	MD_GetHsmState
+	MD_ResetHsm
+	MD_SendReceive
+	MD_GetParameter
