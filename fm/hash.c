@@ -3,6 +3,8 @@
 extern TESLAParams params;
 
 uint32_t hash_f(uint32_t *c, uint32_t *fc) {
+  memset(fc, 0, params.n*sizeof(uint32_t));
+
   uint32_t i;
   uint32_t *shift = (uint32_t *)calloc(params.omega_pr, sizeof(uint32_t));
   if(shift == NULL) {

@@ -140,7 +140,7 @@ CK_RV fm_tesla_sign(
   int max_count = 0;
   while(1) {
     max_count++;
-    if(max_count == 10) {
+    if(max_count == 100) {
       return 0x250;
     }
 
@@ -161,13 +161,17 @@ CK_RV fm_tesla_sign(
     idwt(v2);
     d_rounding(v1);
     d_rounding(v2);
+    for (size_t i = 0; i < params.n; i++) {
+      v1_c[i] = v1[i];
+      v2_c[i] = v2[i];
+    }
 
     C_DigestInit(h_session, &mech);
-    rv = C_DigestUpdate(h_session, (uint8_t *)v1, sizeof(uint32_t)*params.n);
+    rv = C_DigestUpdate(h_session, v1_c, params.n);
     if(rv != CKR_OK) {
       return rv;
     }
-    rv = C_DigestUpdate(h_session, (uint8_t *)v2, sizeof(uint32_t)*params.n);
+    rv = C_DigestUpdate(h_session, v2_c, params.n);
     if(rv != CKR_OK) {
       return rv;
     }
@@ -182,10 +186,10 @@ CK_RV fm_tesla_sign(
     }
     for (size_t i = 0; i < 16; i++) {
       sig_c[i] =
-      ((uint32_t)hash[i] << 24) +
-      ((uint32_t)hash[i+1] << 16) +
-      ((uint32_t)hash[i+2] << 8) +
-      (uint32_t)hash[i+3];
+      ((uint32_t)hash[4*i] << 24) +
+      ((uint32_t)hash[4*i+1] << 16) +
+      ((uint32_t)hash[4*i+2] << 8) +
+      (uint32_t)hash[4*i+3];
     }
 
     if(hash_f(sig_c, f_digest) != 0) {

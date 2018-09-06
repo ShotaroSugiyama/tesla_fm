@@ -116,48 +116,48 @@ int main() {
   MD_Finalize();
 
   int i;
-  printf("key = {}\nkey[:t1] = [");
+  printf("module TestVector\nKey = {\"t1\":[");
   for (i = 0; i < params.n-1; i++) {
-    printf("%lu, ", public_key[i]);
+    printf("%u, ", public_key[i]);
   }
-  printf("%lu]\n", public_key[params.n-1]);
-  printf("key[:t2] = [");
+  printf("%u], ", public_key[params.n-1]);
+  printf("\"t2\":[");
   for (i = 0; i < params.n-1; i++) {
-    printf("%lu, ", public_key[i+params.n]);
+    printf("%u, ", public_key[i+params.n]);
   }
-  printf("%lu]\n", public_key[2*params.n-1]);
-  printf("key[:seed] = [");
+  printf("%u], ", public_key[2*params.n-1]);
+  printf("\"seed\":[");
   for (i = 0; i < 7; i++) {
-    printf("%lu, ", public_key[i+2*params.n]);
+    printf("%u, ", public_key[i+2*params.n]);
   }
-  printf("%lu]\n", public_key[7+2*params.n]);
+  printf("%u], ", public_key[7+2*params.n]);
 
-  printf("key[:s] = [");
+  printf("\"s\":[");
   for (i = 0; i < params.n-1; i++) {
-    printf("%lu, ", secret_key[i]);
+    printf("%u, ", secret_key[i]);
   }
-  printf("%lu]\n", secret_key[params.n-1]);
-  printf("key[:e1] = [");
+  printf("%u], ", secret_key[params.n-1]);
+  printf("\"e1\":[");
   for (i = 0; i < params.n-1; i++) {
-    printf("%lu, ", secret_key[i+params.n]);
+    printf("%u, ", secret_key[i+params.n]);
   }
-  printf("%lu]\n", secret_key[2*params.n-1]);
-  printf("key[:e2] = [");
+  printf("%u], ", secret_key[2*params.n-1]);
+  printf("\"e2\":[");
   for (i = 0; i < params.n-1; i++) {
-    printf("%lu, ", secret_key[i+2*params.n]);
+    printf("%u, ", secret_key[i+2*params.n]);
   }
-  printf("%lu]\n", secret_key[3*params.n-1]);
+  printf("%u]}\n", secret_key[3*params.n-1]);
 
-  printf("signature = {}\nsignature[:z] = [");
+  printf("Signature = {\"z\":[");
   for (i = 0; i < params.n-1; i++) {
-    printf("%lu, ", signature[i]);
+    printf("%u, ", signature[i]);
   }
-  printf("%lu]\n", signature[params.n-1]);
-  printf("signature[:c] = [");
+  printf("%u], ", signature[params.n-1]);
+  printf("\"c\":[");
   for (i = 0; i < 15; i++) {
-    printf("%lu, ", signature[i+params.n]);
+    printf("%u, ", signature[i+params.n]);
   }
-  printf("%lu]\n", signature[15+params.n]);
+  printf("%u]}\nend\n", signature[15+params.n]);
 
   exit(EXIT_SUCCESS);
 }
