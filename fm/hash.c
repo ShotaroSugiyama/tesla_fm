@@ -45,7 +45,8 @@ void d_rounding(uint32_t* x) {
   uint32_t m = 0xffffffff >> (32-params.d);
   uint32_t e = 0x1 << params.d;
   uint32_t tmp;
-  for (size_t i = 0; i < params.n; i++) {
+  uint32_t i;
+  for (i = 0; i < params.n; i++) {
     tmp = x[i] & m;
     if(tmp > e/2) {
       tmp -= e;
@@ -56,9 +57,13 @@ void d_rounding(uint32_t* x) {
 
 uint32_t l_norm_inf(uint32_t* x) {
   uint32_t max = 0, abs = 0;
-  for (size_t i = 0; i < params.n; i++) {
+  uint32_t i;
+  for (i = 0; i < params.n; i++) {
     if(x[i] > (params.q-1)/2) {
       abs = params.q - x[i];
+    }
+    else {
+      abs = x[i];
     }
     if(abs > max) {
       max = abs;

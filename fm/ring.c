@@ -31,6 +31,37 @@ uint32_t mod_mul(uint32_t a, uint32_t b) {
   return (a0 + a1) % params.q;
 }
 
+// mod mul for power pc
+/*
+uint32_t mod_mul(uint32_t a, uint32_t b) {
+  uint32_t u = 0, l = 0, ans, c = 0xffff0;
+  __asm__(
+    "mullw %0, %1, %2\n\t" :
+    "=r"(l) :
+    "r"(a), "r"(b) :
+  );
+  __asm__(
+    "mulhwu %0, %1, %2\n\t" :
+    "=r"(u) :
+    "r"(a), "r"(b) :
+  );
+  ans = l % params.q;
+  __asm__(
+    "mullw %0, %1, %2\n\t" :
+    "=r"(l) :
+    "r"(u), "r"(c) :
+  );
+  __asm__(
+    "mulhwu %0, %1, %2\n\t" :
+    "=r"(u) :
+    "r"(u), "r"(c) :
+  );
+  ans += l % params.q;
+  ans += (u * 0xffff0) % params.q;
+  return ans % params.q;
+}
+*/
+
 uint32_t mod_pow(uint32_t b, uint32_t e) {
   uint32_t result = 1;
   while (e > 0) {

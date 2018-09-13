@@ -42,6 +42,7 @@ CK_RV fm_tesla_sign(
   uint32_t *secret_key,
   uint32_t *signature
 ) {
+  uint32_t i;
 
   CK_SESSION_HANDLE h_session;
   CK_RV rv;
@@ -140,13 +141,13 @@ CK_RV fm_tesla_sign(
   int max_count = 0;
   while(1) {
     max_count++;
-    if(max_count == 100) {
+    if(max_count == 10000) {
       return 0x250;
     }
 
     // sample r
     mod_sampling(&h_session, params.n, bounded_noise, 2*params.B+1);
-    for (size_t i = 0; i < params.n; i++) {
+    for (i = 0; i < params.n; i++) {
       bounded_noise[i] = mod_sub(bounded_noise[i], params.B);
     }
     dwt(bounded_noise);
@@ -161,7 +162,7 @@ CK_RV fm_tesla_sign(
     idwt(v2);
     d_rounding(v1);
     d_rounding(v2);
-    for (size_t i = 0; i < params.n; i++) {
+    for (i = 0; i < params.n; i++) {
       v1_c[i] = v1[i];
       v2_c[i] = v2[i];
     }
@@ -184,7 +185,7 @@ CK_RV fm_tesla_sign(
       return digest_len;
       return rv;
     }
-    for (size_t i = 0; i < 16; i++) {
+    for (i = 0; i < 16; i++) {
       sig_c[i] =
       ((uint32_t)hash[4*i] << 24) +
       ((uint32_t)hash[4*i+1] << 16) +
@@ -253,6 +254,7 @@ CK_RV fm_tesla_sign(
 /* command handler entry point */
 static void fm_tesla_sign_handler(HI_MsgHandle token, void *request_buf, uint32_t request_len) {
   CK_RV rv;
+  uint32_t i;
 
   /* Argument sanity check */
   if(request_len < sizeof(uint8_t)) {
@@ -278,7 +280,7 @@ static void fm_tesla_sign_handler(HI_MsgHandle token, void *request_buf, uint32_
       (uint32_t *)(out + sizeof(uint32_t)*(params.public_key_length)),
       (uint32_t *)(out + sizeof(uint32_t)*(key_length))
     );
-    for (size_t i = 0; i < key_length + signature_length; i++) {
+    for (i = 0; i < key_length + signature_length; i++) {
       *(uint32_t *)(out+sizeof(uint32_t)*i) = hton_long(*(uint32_t *)(out+sizeof(uint32_t)*i));
     }
     SVC_SendReply(token, (uint32_t)rv);
